@@ -497,6 +497,7 @@ module ActiveShipping
     end
 
     def build_location_node(xml, name, location)
+      country_name = ActiveUtils::Country.find(location.country_code(:alpha2)).name
       xml.public_send(name) do
         xml.Address do
           xml.StreetLines(location.address1) if location.address1
@@ -505,6 +506,7 @@ module ActiveShipping
           xml.City(location.city) if location.city
           xml.PostalCode(location.postal_code)
           xml.CountryCode(location.country_code(:alpha2))
+          xml.CountryName(country_name)
           xml.Residential(true) unless location.commercial?
         end
       end
